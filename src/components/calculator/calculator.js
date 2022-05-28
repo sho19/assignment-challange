@@ -21,12 +21,24 @@ function Calculator() {
         let currentNum = document.querySelector('#num').value
         if (currentNum == '')
             return;
-        let sum = currentSum + parseInt(currentNum);
+        let sum = currentSum + currentNum;
         setCurrentSum(sum);
         document.querySelector('#num').value = "";
 
     }
 
+
+    const subract = (e) => {
+        e.preventDefault();
+        if (clear) setClear(false);
+        let currentNum = document.querySelector('#num').value
+        if (currentNum == '')
+            return;
+        let sum = currentSum - currentNum;
+        setCurrentSum(sum);
+        document.querySelector('#num').value = "";
+
+    }
 
     const Clear = (e) => {
         e.preventDefault();
@@ -38,7 +50,7 @@ function Calculator() {
 
     const checkForInput = (evt) => {
         evt.preventDefault();
-        if(input==0 && evt.target.value==0){
+        if((input==0 && evt.target.value==0)){
             console.log("0 is being typed multiple times")
         }
         else{
