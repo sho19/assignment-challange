@@ -50,7 +50,7 @@ class App extends Component {
     this.state.previousNumber = this.state.input;
     this.setState({ input: "" });
     this.state.operator = "plus";
-    this.addToDisplay()
+    this.addToDisplay("+")
   };
 
   evaluate = () => {
