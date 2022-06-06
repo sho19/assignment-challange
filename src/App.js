@@ -14,7 +14,8 @@ class App extends Component {
       previousNumber: "",
       currentNumber: "",
       operator: "",
-      display: ""
+      display: "",
+      ele: 3
     };
   }
 
@@ -42,25 +43,55 @@ class App extends Component {
   };
 
   clearInput = () => {
+    this.previousNumber = 0
     this.setState({ input: "" });
     this.setState({ display: "" });
   };
 
+  previousNumber = 0
+
   add = () => {
-    this.state.previousNumber = this.state.input;
+    if (!this.previousNumber) {
+      this.previousNumber = this.state.input;
+    }
+    else {
+      this.previousNumber = Number(this.previousNumber) + Number(this.state.input)
+    }
     this.setState({ input: "" });
-    this.state.operator = "plus";
+    this.operator = "plus";
     this.addToDisplay("+")
+
   };
 
   evaluate = () => {
-    this.state.currentNumber = this.state.input;
-    if (this.state.operator == "plus") {
-      let sum = Number(this.state.previousNumber) + Number(this.state.currentNumber)
+    this.currentNumber = this.state.input;
+    if (this.operator === "plus") {
+      let sum = Number(this.previousNumber) + Number(this.currentNumber)
       this.setState({ display: sum });
     }
     this.setState({ input: "" });
     this.setState({ operator: "" })
+    this.previousNumber = 0
+
+  }
+
+  series = Array.from(Array(3).keys())
+
+  createNumButtons = () => {
+    let i = 1;
+    return (
+      <>
+        {this.series.map((item,index) => {
+          return (
+            <div className="row" key={index}>
+              {this.series.map(() => {
+                return <Button handleClick={this.addToInput} key={i}>{i++}</Button>
+              })}
+            </div>
+          )
+        })}
+      </>
+    )
   }
 
   render() {
@@ -72,31 +103,22 @@ class App extends Component {
             <div className="row">
               <Input>{this.state.display}</Input>
             </div>
-            <div className="row">
-              <Button handleClick={this.addToInput}>7</Button>
-              <Button handleClick={this.addToInput}>8</Button>
-              <Button handleClick={this.addToInput}>9</Button>
-            </div>
-            <div className="row">
-              <Button handleClick={this.addToInput}>4</Button>
-              <Button handleClick={this.addToInput}>5</Button>
-              <Button handleClick={this.addToInput}>6</Button>
-            </div>
-            <div className="row">
-              <Button handleClick={this.addToInput}>1</Button>
-              <Button handleClick={this.addToInput}>2</Button>
-              <Button handleClick={this.addToInput}>3</Button>
-            </div>
-            <div className="row">
-              <Button handleClick={this.addDecimal}>.</Button>
-              <Button handleClick={this.addZeroToInput}>0</Button>
-              <Button handleClick={this.evaluate}>=</Button>
-              <Button handleClick={this.add}>+</Button>
-            </div>
-            <div className="row">
-              <ClearButton handleClear={this.clearInput}>Clear</ClearButton>
-            </div>
+            <>
+              {
+                this.createNumButtons()
+              }
+              <div className="row">
+                <Button handleClick={this.addDecimal}>.</Button>
+                <Button handleClick={this.addZeroToInput}>0</Button>
+                <Button handleClick={this.evaluate}>=</Button>
+                <Button handleClick={this.add}>+</Button>
+              </div>
+              <div className="row">
+                <ClearButton handleClear={this.clearInput}>Clear</ClearButton>
+              </div>
+            </>
           </div>
+
         </div>
       </div>
     );
